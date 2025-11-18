@@ -2,8 +2,13 @@
 import { useState } from "react";
 import dynamic from "next/dynamic";
 import CategoryFilter from "@/app/components/category-filter";
+import BlurText from "./components/BlurText";
 
 const PeriodicGrid = dynamic(() => import("@/app/components/PeriodicGrid"), { ssr: false });
+
+const handleAnimationComplete = () => {
+  console.log('Animation completed!');
+};
 
 
 export default function Home() {
@@ -15,12 +20,25 @@ export default function Home() {
       <main className="relative mx-auto max-w-7xl px-6 py-10">
         <header className="mb-10 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">Periodic Table</h1>
+
+            {/*<h1 className="text-3xl font-bold tracking-tight">Periodic Table</h1>*/}
+
+            <BlurText
+                text="Periodic Table"
+                delay={150}
+                animateBy="words"
+                direction="top"
+                onAnimationComplete={handleAnimationComplete}
+                className="text-6xl font-bold tracking-tight"
+            />
+
             <p className="mt-1 text-sm text-white/60">Minimalist, animated table with element details and user-contributed notes.</p>
           </div>
+
           <div className="flex items-center gap-2 text-xs text-white/60">
             Data sample for demo. Replace with a full dataset as needed.
           </div>
+
         </header>
 
         <div className="mb-6">

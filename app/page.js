@@ -10,8 +10,9 @@ export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState("all");
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-neutral-950 to-black text-white">
-      <main className="mx-auto max-w-7xl px-6 py-10">
+    <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-black via-neutral-950 to-black text-white">
+      <div className="magic-grid-pattern" aria-hidden />
+      <main className="relative mx-auto max-w-7xl px-6 py-10">
         <header className="mb-10 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
           <div>
             <h1 className="text-3xl font-bold tracking-tight">Periodic Table</h1>

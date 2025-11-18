@@ -54,7 +54,9 @@ export default function Home() {
                 className="text-6xl font-bold tracking-tight"
             />
 
-            <p className="mt-1 text-sm text-white/60">Minimalist, animated table with element details and user-contributed notes.</p>
+            <p className="mt-1 text-sm text-white/60">
+              Refined animated tableau revealing element details and community notes.
+            </p>
           </div>
 
           <div

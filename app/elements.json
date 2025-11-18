@@ -1,0 +1,12 @@
+[
+  {"number":1,"symbol":"H","name":"Hydrogen","group":"nonmetal","atomic_mass":1.008,"summary":"Hydrogen is the lightest element."},
+  {"number":2,"symbol":"He","name":"Helium","group":"noble","atomic_mass":4.0026,"summary":"Helium is a noble gas."},
+  {"number":3,"symbol":"Li","name":"Lithium","group":"alkali","atomic_mass":6.94,"summary":"Lithium is an alkali metal."},
+  {"number":4,"symbol":"Be","name":"Beryllium","group":"alkaline","atomic_mass":9.0122,"summary":"Beryllium is an alkaline earth metal."},
+  {"number":5,"symbol":"B","name":"Boron","group":"metalloid","atomic_mass":10.81,"summary":"Boron is a metalloid."},
+  {"number":6,"symbol":"C","name":"Carbon","group":"nonmetal","atomic_mass":12.011,"summary":"Carbon is essential to life."},
+  {"number":7,"symbol":"N","name":"Nitrogen","group":"nonmetal","atomic_mass":14.007,"summary":"Nitrogen makes up most of Earth's atmosphere."},
+  {"number":8,"symbol":"O","name":"Oxygen","group":"nonmetal","atomic_mass":15.999,"summary":"Oxygen supports combustion and respiration."},
+  {"number":9,"symbol":"F","name":"Fluorine","group":"halogen","atomic_mass":18.998,"summary":"Fluorine is the most electronegative element."},
+  {"number":10,"symbol":"Ne","name":"Neon","group":"noble","atomic_mass":20.180,"summary":"Neon is used in lighting."}
+]

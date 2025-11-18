@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import CategoryFilter from "@/app/components/category-filter";
 import BlurText from "./components/BlurText";
@@ -10,9 +10,31 @@ const handleAnimationComplete = () => {
   console.log('Animation completed!');
 };
 
+const MENDELEEV_QUOTES = [
+  "\"There exists everywhere a medium in things, determined by equilibrium.\"",
+  "\"There is nothing in this world that I fear to say.\"",
+  "\"Certain characteristic properties of elements can be foretold from their atomic weights.\"",
+  "\"Work, look for peace and calm in work: you will find it nowhere else.\"",
+  "\"The elements which are the most widely diffused have small atomic weights.\""
+];
 
 export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const [quoteIndex, setQuoteIndex] = useState(0);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setQuoteIndex((prev) => {
+        if (MENDELEEV_QUOTES.length < 2) return prev;
+        let next = prev;
+        while (next === prev) {
+          next = Math.floor(Math.random() * MENDELEEV_QUOTES.length);
+        }
+        return next;
+      });
+    }, 6000);
+    return () => clearInterval(id);
+  }, []);
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-black via-neutral-950 to-black text-white">
@@ -35,8 +57,14 @@ export default function Home() {
             <p className="mt-1 text-sm text-white/60">Minimalist, animated table with element details and user-contributed notes.</p>
           </div>
 
-          <div className="flex items-center gap-2 text-xs text-white/60">
-            Data sample for demo. Replace with a full dataset as needed.
+          <div
+            className="flex flex-col gap-1 rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-xs text-white/70 sm:max-w-xs cursor-help"
+            title="Father of Periodic Table"
+          >
+            <span className="text-[10px] uppercase tracking-[0.3em] text-white/40">Dmitri Mendeleev</span>
+            <p className="italic text-sm leading-snug text-white/70 transition-opacity duration-500">
+              {MENDELEEV_QUOTES[quoteIndex]}
+            </p>
           </div>
 
         </header>

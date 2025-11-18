@@ -17,6 +17,7 @@ const bodyClassName = `${geistSans.variable} ${geistMono.variable} antialiased`.
 export const metadata = {
   title: "Periodic Table",
   description: "Minimalist animated periodic table with user-contributed details",
+  icon: "/icon.svg",
 };
 
 export default function RootLayout({ children }) {

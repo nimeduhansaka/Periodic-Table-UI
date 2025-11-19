@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import CategoryFilter from "@/app/components/category-filter";
 import BlurText from "./components/BlurText";
+import { BlurFade } from "@/components/ui/blur-fade"
 
 const PeriodicGrid = dynamic(() => import("@/app/components/PeriodicGrid"), { ssr: false });
 
@@ -59,6 +60,7 @@ export default function Home() {
             </p>
           </div>
 
+          <BlurFade>
           <div
             className="flex flex-col gap-1 rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-xs text-white/70 sm:max-w-xs cursor-help"
             title="Father of Periodic Table"
@@ -68,6 +70,7 @@ export default function Home() {
               {MENDELEEV_QUOTES[quoteIndex]}
             </p>
           </div>
+          </BlurFade>
 
         </header>
 

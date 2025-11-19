@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import CategoryFilter from "@/app/components/category-filter";
 import BlurText from "./components/BlurText";
 import { BlurFade } from "@/components/ui/blur-fade"
+import CubeLoader from "@/app/components/CubeLoader";
 
 const PeriodicGrid = dynamic(() => import("@/app/components/PeriodicGrid"), { ssr: false });
 
@@ -19,9 +20,17 @@ const MENDELEEV_QUOTES = [
   "\"The elements which are the most widely diffused have small atomic weights.\""
 ];
 
+const MIN_LOADER_DURATION_MS = 2000;
+
 export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [quoteIndex, setQuoteIndex] = useState(0);
+  const [isPageLoading, setIsPageLoading] = useState(true);
+
+  useEffect(() => {
+    const loaderTimer = setTimeout(() => setIsPageLoading(false), MIN_LOADER_DURATION_MS);
+    return () => clearTimeout(loaderTimer);
+  }, []);
 
   useEffect(() => {
     const id = setInterval(() => {
@@ -36,6 +45,14 @@ export default function Home() {
     }, 6000);
     return () => clearInterval(id);
   }, []);
+
+  if (isPageLoading) {
+    return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black">
+          <CubeLoader />
+        </div>
+    );
+  }
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-black via-neutral-950 to-black text-white">

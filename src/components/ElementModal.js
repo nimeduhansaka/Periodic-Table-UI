@@ -112,10 +112,10 @@ export default function ElementModal({ open, onClose, element }) {
           animate={{ y: 0, opacity: 1, scale: 1 }}
           exit={{ y: 10, opacity: 0, scale: 0.98 }}
           transition={{ type: "spring", stiffness: 260, damping: 22 }}
-          className="mx-4 w-[min(1000px,96vw)] overflow-hidden rounded-2xl border border-white/10 bg-neutral-950"
+          className="mx-2 flex w-full max-w-4xl flex-col overflow-hidden rounded-2xl border border-white/10 bg-neutral-950 shadow-2xl max-h-[90vh] sm:mx-4"
         >
-          <div className="flex items-center justify-between border-b border-white/10 p-4">
-            <div className="flex items-center gap-3">
+          <div className="flex flex-col gap-3 border-b border-white/10 p-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex flex-1 items-center gap-3">
               <div className="relative h-14 w-14 overflow-hidden rounded-lg ring-1 ring-white/10">
                 <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-white/5" />
                 <img src={derived.image} alt={`${element.name}`} className="absolute inset-0 h-full w-full object-cover" onError={(e)=>{ e.currentTarget.style.display='none'; }} />
@@ -128,111 +128,116 @@ export default function ElementModal({ open, onClose, element }) {
                 <div className="text-xs text-white/60">Atomic No. {element.number} • Group {element.group}</div>
               </div>
             </div>
-            <button onClick={onClose} className="rounded-md px-3 py-1.5 text-sm text-white/70 hover:bg-white/5">Close</button>
+            <button
+              onClick={onClose}
+              className="self-end rounded-md px-3 py-1.5 text-sm text-white/70 hover:bg-white/5 sm:self-auto"
+            >
+              Close
+            </button>
           </div>
 
-          {/* Warnings */}
-          {(derived?.radioactive || derived?.toxic) && (
-            <div className="mx-4 mt-4 rounded-xl border border-yellow-500/20 bg-yellow-500/10 p-3 text-yellow-300">
-              <div className="flex items-center gap-2 text-sm font-medium">
-                {derived.radioactive && (
-                  <span className="inline-flex items-center gap-1"><RadiationIcon className="h-4 w-4"/> Radioactive</span>
-                )}
-                {derived.radioactive && derived.toxic && <span>•</span>}
-                {derived.toxic && (
-                  <span className="inline-flex items-center gap-1"><WarningIcon className="h-4 w-4"/> Potentially harmful</span>
+          <div className="flex-1 overflow-y-auto">
+            {(derived?.radioactive || derived?.toxic) && (
+              <div className="mx-4 mt-4 rounded-xl border border-yellow-500/20 bg-yellow-500/10 p-3 text-yellow-300 sm:mx-6">
+                <div className="flex items-center gap-2 text-sm font-medium">
+                  {derived.radioactive && (
+                    <span className="inline-flex items-center gap-1"><RadiationIcon className="h-4 w-4"/> Radioactive</span>
+                  )}
+                  {derived.radioactive && derived.toxic && <span>•</span>}
+                  {derived.toxic && (
+                    <span className="inline-flex items-center gap-1"><WarningIcon className="h-4 w-4"/> Potentially harmful</span>
+                  )}
+                </div>
+                {derived.toxic && derived.toxicityNote && (
+                  <div className="mt-1 text-xs text-yellow-200/90">{derived.toxicityNote}</div>
                 )}
               </div>
-              {derived.toxic && derived.toxicityNote && (
-                <div className="mt-1 text-xs text-yellow-200/90">{derived.toxicityNote}</div>
-              )}
-            </div>
-          )}
+            )}
 
-          <div className="grid grid-cols-1 gap-6 p-6 md:grid-cols-5">
-            <div className="md:col-span-3 space-y-5">
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <div className={`rounded-xl bg-gradient-to-br ${gradientClass} p-[1.5px]`}>
-                  <div className="rounded-[0.9rem] bg-neutral-950">
-                    <div className="relative h-48 w-full overflow-hidden rounded-[0.9rem]">
-                      <div className={`absolute inset-0 bg-gradient-to-br ${gradientClass} opacity-70`} />
-                      <div className="relative z-10 flex h-full flex-col items-center justify-center gap-1 text-center">
-                        <div className="text-5xl font-black text-white">{element.symbol}</div>
-                        <div className="text-xs uppercase tracking-[0.3em] text-white/70">{element.name}</div>
-                        <div className="text-[11px] text-white/60">Atomic Mass {atomicMassDisplay}</div>
+            <div className="grid grid-cols-1 gap-5 p-4 pb-6 sm:p-6 lg:grid-cols-5">
+              <div className="space-y-5 lg:col-span-3">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <div className={`rounded-xl bg-gradient-to-br ${gradientClass} p-[1.5px]`}>
+                    <div className="rounded-[0.9rem] bg-neutral-950">
+                      <div className="relative h-48 w-full overflow-hidden rounded-[0.9rem]">
+                        <div className={`absolute inset-0 bg-gradient-to-br ${gradientClass} opacity-70`} />
+                        <div className="relative z-10 flex h-full flex-col items-center justify-center gap-1 text-center">
+                          <div className="text-5xl font-black text-white">{element.symbol}</div>
+                          <div className="text-xs uppercase tracking-[0.3em] text-white/70">{element.name}</div>
+                          <div className="text-[11px] text-white/60">Atomic Mass {atomicMassDisplay}</div>
+                        </div>
                       </div>
+                      <div className="border-t border-white/10 p-3 text-xs text-white/60">Illustrative tile</div>
                     </div>
-                    <div className="border-t border-white/10 p-3 text-xs text-white/60">Illustrative tile</div>
+                  </div>
+
+                  {/* Key Facts */}
+                  <div className="rounded-xl border border-white/10 bg-white/5 p-3">
+                    <div className="text-sm font-semibold text-white/80">Key facts</div>
+                    <div className="mt-3 grid grid-cols-2 gap-3 text-sm min-[420px]:grid-cols-2">
+                      <Info label="Symbol" value={element.symbol} />
+                      <Info label="Atomic Number" value={element.number} />
+                      <Info label="Atomic Mass" value={atomicMassDisplay} />
+                      <Info label="Group" value={element.group} />
+                    </div>
                   </div>
                 </div>
 
-                {/* Key Facts */}
+                <div>
+                  <div className="text-sm font-semibold text-white/80">Summary</div>
+                  <p className="mt-1 text-sm leading-relaxed text-white/60">{element.summary}</p>
+                </div>
+
+                <div>
+                  <div className="text-sm font-semibold text-white/80">Common uses</div>
+                  <ul className="mt-2 flex flex-wrap gap-2">
+                    {derived.uses.map((u, i) => (
+                      <li key={i} className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/70">{u}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              <div className="space-y-3 lg:col-span-2">
+                <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                  <div className="text-sm font-semibold text-white/80">User contributions</div>
+                  {user ? (
+                    <div className="flex items-center gap-2 text-xs text-white/60">
+                      Signed in as <span className="font-semibold text-white/80">{user.name}</span>
+                      <button onClick={logout} className="rounded px-2 py-1 hover:bg-white/5">Log out</button>
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-1 text-xs text-white/60">
+                      <input placeholder="Your name" className="w-32 rounded bg-white/5 px-2 py-1 outline-none placeholder:text-white/40" onKeyDown={(e)=>{ if(e.key==='Enter'){ login(e.currentTarget.value.trim()||'Guest') } }} />
+                      <button onClick={()=>{ const el = document.activeElement; const name = el && el.value ? el.value : 'Guest'; login(name); }} className="rounded bg-white/10 px-2 py-1 hover:bg-white/20">Log in</button>
+                    </div>
+                  )}
+                </div>
+
                 <div className="rounded-xl border border-white/10 bg-white/5 p-3">
-                  <div className="text-sm font-semibold text-white/80">Key facts</div>
-                  <div className="mt-2 grid grid-cols-2 gap-3 text-sm sm:grid-cols-2">
-                    <Info label="Symbol" value={element.symbol} />
-                    <Info label="Atomic Number" value={element.number} />
-                    <Info label="Atomic Mass" value={atomicMassDisplay} />
-                    <Info label="Group" value={element.group} />
+                  <textarea
+                    value={text}
+                    onChange={(e) => setText(e.target.value)}
+                    placeholder="Add an extra detail, source, or usage..."
+                    className="h-28 w-full resize-none rounded-md bg-transparent p-2 text-sm text-white/80 outline-none placeholder:text-white/40 sm:h-24"
+                  />
+                  <div className="mt-2 flex justify-end">
+                    <button disabled={!user || !text.trim()} onClick={handleAdd} className="rounded-lg bg-white/10 px-3 py-1.5 text-sm text-white/80 ring-1 ring-white/10 transition enabled:hover:bg-white/20 disabled:opacity-40">Save</button>
                   </div>
                 </div>
-              </div>
 
-              <div>
-                <div className="text-sm font-semibold text-white/80">Summary</div>
-                <p className="mt-1 text-sm leading-relaxed text-white/60">{element.summary}</p>
-              </div>
-
-              <div>
-                <div className="text-sm font-semibold text-white/80">Common uses</div>
-                <ul className="mt-2 flex flex-wrap gap-2">
-                  {derived.uses.map((u, i) => (
-                    <li key={i} className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/70">{u}</li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-
-            {/* Contributions */}
-            <div className="md:col-span-2 space-y-3">
-              <div className="flex items-center justify-between">
-                <div className="text-sm font-semibold text-white/80">User contributions</div>
-                {user ? (
-                  <div className="flex items-center gap-2 text-xs text-white/60">
-                    Signed in as <span className="font-semibold text-white/80">{user.name}</span>
-                    <button onClick={logout} className="rounded px-2 py-1 hover:bg-white/5">Log out</button>
-                  </div>
-                ) : (
-                  <div className="flex items-center gap-1 text-xs text-white/60">
-                    <input placeholder="Your name" className="w-32 rounded bg-white/5 px-2 py-1 outline-none placeholder:text-white/40" onKeyDown={(e)=>{ if(e.key==='Enter'){ login(e.currentTarget.value.trim()||'Guest') } }} />
-                    <button onClick={()=>{ const el = document.activeElement; const name = el && el.value ? el.value : 'Guest'; login(name); }} className="rounded bg-white/10 px-2 py-1 hover:bg-white/20">Log in</button>
-                  </div>
-                )}
-              </div>
-
-              <div className="rounded-xl border border-white/10 bg-white/5 p-3">
-                <textarea
-                  value={text}
-                  onChange={(e) => setText(e.target.value)}
-                  placeholder="Add an extra detail, source, or usage..."
-                  className="h-24 w-full resize-none rounded-md bg-transparent p-2 text-sm text-white/80 outline-none placeholder:text-white/40"
-                />
-                <div className="mt-2 flex justify-end">
-                  <button disabled={!user || !text.trim()} onClick={handleAdd} className="rounded-lg bg-white/10 px-3 py-1.5 text-sm text-white/80 ring-1 ring-white/10 transition enabled:hover:bg-white/20 disabled:opacity-40">Save</button>
+                <div className="space-y-2">
+                  {list.length === 0 ? (
+                    <div className="text-xs text-white/50">No contributions yet.</div>
+                  ) : (
+                    list.map((n) => (
+                      <div key={n.id} className="rounded-lg border border-white/10 bg-white/5 p-3">
+                        <div className="text-xs text-white/50">by {n.author} • {new Date(n.createdAt).toLocaleString()}</div>
+                        <div className="mt-1 whitespace-pre-wrap text-sm text-white/80">{n.text}</div>
+                      </div>
+                    ))
+                  )}
                 </div>
-              </div>
-
-              <div className="space-y-2">
-                {list.length === 0 ? (
-                  <div className="text-xs text-white/50">No contributions yet.</div>
-                ) : (
-                  list.map((n) => (
-                    <div key={n.id} className="rounded-lg border border-white/10 bg-white/5 p-3">
-                      <div className="text-xs text-white/50">by {n.author} • {new Date(n.createdAt).toLocaleString()}</div>
-                      <div className="mt-1 whitespace-pre-wrap text-sm text-white/80">{n.text}</div>
-                    </div>
-                  ))
-                )}
               </div>
             </div>
           </div>

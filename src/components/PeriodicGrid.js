@@ -4,14 +4,31 @@ import ElementCard from "./ElementCard";
 import dynamic from "next/dynamic";
 
 const ElementModal = dynamic(() => import("./ElementModal"), { ssr: false });
+const MOBILE_NOTICE_STORAGE_KEY = "pt-mobile-notice";
 
 export default function PeriodicGrid({ selectedCategory = "all" }) {
   const [elements, setElements] = useState([]);
   const [selected, setSelected] = useState(null);
   const [open, setOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [mobileAcknowledged, setMobileAcknowledged] = useState(false);
 
   useEffect(() => {
     fetch("/elements.json").then((r) => r.json()).then(setElements);
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const stored = window.sessionStorage.getItem(MOBILE_NOTICE_STORAGE_KEY);
+    if (stored === "1") setMobileAcknowledged(true);
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const handleResize = () => setIsMobile(window.innerWidth <= 640);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const filteredElements = useMemo(() => {
@@ -141,31 +158,72 @@ export default function PeriodicGrid({ selectedCategory = "all" }) {
     return layout.map((row) => row.map((n) => (n ? mapByNumber.get(n) : null)));
   }, [filteredElements]);
 
+  const showVerticalLayout = isMobile && mobileAcknowledged;
+  const showMobileNotice = isMobile && !mobileAcknowledged;
+
   return (
     <div className="w-full">
-      <div className="grid grid-cols-18 gap-2">
-        {rows.map((row, rIdx) => (
-          <div key={rIdx} className={`col-span-18 grid grid-cols-18 gap-2 ${rIdx >= 7 ? 'mt-4' : ''}`}>
-            {row.map((el, cIdx) => (
-              <div key={cIdx} className="col-span-1">
-                {el ? (
-                  <ElementCard
-                    el={el}
-                    onClick={(e) => {
-                      setSelected(e);
-                      setOpen(true);
-                    }}
-                  />
-                ) : (
-                  <div className="aspect-square"></div>
-                )}
-              </div>
-            ))}
-          </div>
-        ))}
-      </div>
+      {showVerticalLayout ? (
+        <div className="flex flex-col gap-2">
+          {filteredElements.map((el) => (
+            <ElementCard
+              key={el.number}
+              el={el}
+              onClick={(element) => {
+                setSelected(element);
+                setOpen(true);
+              }}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="grid grid-cols-18 gap-2">
+          {rows.map((row, rIdx) => (
+            <div key={rIdx} className={`col-span-18 grid grid-cols-18 gap-2 ${rIdx >= 7 ? 'mt-4' : ''}`}>
+              {row.map((el, cIdx) => (
+                <div key={cIdx} className="col-span-1">
+                  {el ? (
+                    <ElementCard
+                      el={el}
+                      onClick={(e) => {
+                        setSelected(e);
+                        setOpen(true);
+                      }}
+                    />
+                  ) : (
+                    <div className="aspect-square"></div>
+                  )}
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+      )}
 
       <ElementModal open={open} onClose={() => setOpen(false)} element={selected} />
+
+      {showMobileNotice && (
+        <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/70 px-6">
+          <div className="w-full max-w-sm rounded-2xl border border-white/15 bg-neutral-900/90 p-6 text-center shadow-2xl backdrop-blur">
+            <h3 className="text-lg font-semibold text-white">Optimized mobile layout</h3>
+            <p className="mt-2 text-sm text-white/70">
+              On phones the periodic table will switch to a vertical list for better readability.
+              Tap continue to view the mobile layout.
+            </p>
+            <button
+              className="mt-4 w-full rounded-lg bg-white/20 px-4 py-2 text-sm font-medium text-white transition hover:bg-white/30"
+              onClick={() => {
+                setMobileAcknowledged(true);
+                if (typeof window !== "undefined") {
+                  window.sessionStorage.setItem(MOBILE_NOTICE_STORAGE_KEY, "1");
+                }
+              }}
+            >
+              Continue
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

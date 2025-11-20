@@ -16,7 +16,7 @@ const MENDELEEV_QUOTES = [
   "\"There exists everywhere a medium in things, determined by equilibrium.\"",
   "\"There is nothing in this world that I fear to say.\"",
   "\"Certain characteristic properties of elements can be foretold from their atomic weights.\"",
-  "\"Work, look for peace and calm in work, you will find it nowhere else.\"",
+  "\"Work,look for peace and calm in work, you will find it nowhere else.\"",
   "\"The elements which are the most widely diffused have small atomic weights.\""
 ];
 

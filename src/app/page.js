@@ -1,12 +1,12 @@
 "use client";
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
-import CategoryFilter from "@/app/components/category-filter";
-import BlurText from "./components/BlurText";
-import { BlurFade } from "@/components/ui/blur-fade"
-import CubeLoader from "@/app/components/CubeLoader";
+import CategoryFilter from "@/src/components/category-filter";
+import BlurText from "../components/BlurText";
+import { BlurFade } from "@/src/components/ui/blur-fade"
+import CubeLoader from "@/src/components/CubeLoader";
 
-const PeriodicGrid = dynamic(() => import("@/app/components/PeriodicGrid"), { ssr: false });
+const PeriodicGrid = dynamic(() => import("@/src/components/PeriodicGrid"), { ssr: false });
 
 const handleAnimationComplete = () => {
   console.log('Animation completed!');
@@ -20,7 +20,7 @@ const MENDELEEV_QUOTES = [
   "\"The elements which are the most widely diffused have small atomic weights.\""
 ];
 
-const MIN_LOADER_DURATION_MS = 2000;
+const MIN_LOADER_DURATION_MS = 1500;
 
 export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState("all");

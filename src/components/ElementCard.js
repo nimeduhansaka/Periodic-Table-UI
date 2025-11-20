@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-import { ATOMIC_MASS_BY_SYMBOL } from "@/app/lib/categories";
+import { ATOMIC_MASS_BY_SYMBOL } from "@/src/app/lib/categories";
 
 export const GROUP_GRADIENTS = {
   alkali: "from-pink-500 to-rose-500",

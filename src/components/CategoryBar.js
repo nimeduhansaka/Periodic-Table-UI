@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
-import { Button } from "@/app/components/ui/button";
+import { Button } from "@/src/components/ui/button";
 
 const typeOptions = [
   { key: "all", label: "All" },

@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { PERIODIC_CATEGORIES } from "@/app/lib/categories";
+import { Button } from "@/src/components/ui/button";
+import { PERIODIC_CATEGORIES } from "@/src/app/lib/categories";
 
 export default function CategoryFilter({ onChange }) {
     const [activeId, setActiveId] = useState("all");

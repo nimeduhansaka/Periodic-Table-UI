@@ -1,9 +1,9 @@
 "use client";
 import { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { useAuth, useNotes } from "@/app/lib/store";
-import { ATOMIC_MASS_BY_SYMBOL } from "@/app/lib/categories";
-import { GROUP_GRADIENTS } from "@/app/components/ElementCard";
+import { useAuth, useNotes } from "@/src/app/lib/store";
+import { ATOMIC_MASS_BY_SYMBOL } from "@/src/app/lib/categories";
+import { GROUP_GRADIENTS } from "@/src/components/ElementCard";
 
 // Heuristics for extra details when not present in data
 const RADIOACTIVE_SYMBOLS = new Set([

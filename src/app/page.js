@@ -6,6 +6,8 @@ import BlurText from "../components/BlurText";
 import { BlurFade } from "@/src/components/ui/blur-fade"
 import CubeLoader from "@/src/components/CubeLoader";
 import TableBottomSection from "@/src/components/TableBottomSection";
+import FooterSection from "@/src/components/FooterSection";
+import BuyMeCoffeeWidget from "@/src/components/BuyMeCoffeeWidget";
 
 const PeriodicGrid = dynamic(() => import("@/src/components/PeriodicGrid"), { ssr: false });
 
@@ -99,6 +101,11 @@ export default function Home() {
         <PeriodicGrid selectedCategory={selectedCategory} />
 
         <TableBottomSection />
+
+        <BuyMeCoffeeWidget/>
+
+        <FooterSection />
+
       </main>
     </div>
   );

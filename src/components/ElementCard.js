@@ -29,16 +29,16 @@ export default function ElementCard({ el, onClick }) {
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.98 }}
       onClick={() => onClick(el)}
-      className={`relative w-full min-h-[96px] min-w-0 rounded-lg bg-gradient-to-br ${color} p-[1.5px] shadow-sm sm:aspect-square sm:min-h-0`}
+      className={`relative aspect-square w-full min-w-0 rounded-lg bg-gradient-to-br ${color} p-[1.5px] shadow-sm`}
     >
-      <div className="flex h-full w-full flex-col justify-between rounded-[9px] bg-neutral-950 p-2 text-left ring-1 ring-white/10 sm:p-1.5">
-        <div className="flex items-center justify-between text-[10px] font-semibold text-white/60 sm:text-[9px]">
+      <div className="flex h-full w-full flex-col justify-between rounded-[9px] bg-neutral-950 p-1.5 text-left ring-1 ring-white/10">
+        <div className="flex items-center justify-between text-[9px] font-semibold text-white/60">
           <span>{el.number}</span>
-          <span className="text-[8px] font-medium text-white/50 sm:text-[8px]">{atomicMass}</span>
+          <span className="text-[8px] font-medium text-white/50">{atomicMass}</span>
         </div>
         <div className="min-w-0">
-          <div className="text-2xl font-extrabold leading-none tracking-tight text-white sm:text-lg">{el.symbol}</div>
-          <div className="mt-0.5 truncate text-[10px] text-white/50 sm:text-[9px]" title={el.name}>{el.name}</div>
+          <div className="text-lg font-extrabold leading-none tracking-tight text-white">{el.symbol}</div>
+          <div className="mt-0.5 truncate text-[9px] text-white/50" title={el.name}>{el.name}</div>
         </div>
       </div>
     </motion.button>

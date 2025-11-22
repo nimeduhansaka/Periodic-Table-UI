@@ -53,13 +53,16 @@ const formatAtomicMass = (el) => {
 
 function getDerivedInfo(el) {
   const symbol = el.symbol;
-  const image = el.image || `/images/elements/${symbol.toLowerCase()}.jpg`;
+  const image = el.image || null; // Don't generate paths for missing images
   const radioactive = el.radioactive ?? RADIOACTIVE_SYMBOLS.has(symbol);
   const toxic = el.toxic ?? TOXIC_SYMBOLS.has(symbol);
   const uses = el.uses && el.uses.length ? el.uses : (COMMON_USES[symbol] || ["Research and industrial applications", "Education", "Material science"]);
   const toxicityNote = el.toxicityNote || (toxic ? `${symbol} may be harmful; handle with appropriate precautions.` : "");
+
   return { image, radioactive, toxic, uses, toxicityNote };
 }
+
+
 
 function RadiationIcon({ className = "h-4 w-4" }) {
   return (
@@ -116,21 +119,30 @@ export default function ElementModal({ open, onClose, element }) {
         >
           <div className="flex flex-col gap-3 border-b border-white/10 p-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex flex-1 items-center gap-3">
+
               <div className="relative h-14 w-14 overflow-hidden rounded-lg ring-1 ring-white/10">
-                <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-white/5" />
-                <img src={derived.image} alt={`${element.name}`} className="absolute inset-0 h-full w-full object-cover" onError={(e)=>{ e.currentTarget.style.display='none'; }} />
-                <div className="absolute inset-0 grid place-items-center text-xl font-bold">
-                  {element.symbol}
-                </div>
+                <div className={`absolute inset-0 bg-gradient-to-br ${gradientClass} opacity-30`}/>
+                {derived.image ? (
+                    <img
+                        src={derived.image}
+                        alt={`${element.name}`}
+                        className="absolute inset-0 h-full w-full object-cover"
+                    />
+                ) : (
+                    <div className="absolute inset-0 grid place-items-center text-xl font-bold text-white">
+                      {element.symbol}
+                    </div>
+                )}
               </div>
+
               <div>
                 <div className="text-lg font-semibold text-white">{element.name}</div>
                 <div className="text-xs text-white/60">Atomic No. {element.number} • Group {element.group}</div>
               </div>
             </div>
             <button
-              onClick={onClose}
-              className="self-end rounded-md px-3 py-1.5 text-sm text-white/70 hover:bg-white/5 sm:self-auto"
+                onClick={onClose}
+                className="self-end rounded-md px-3 py-1.5 text-sm text-white/70 hover:bg-white/5 sm:self-auto"
             >
               Close
             </button>

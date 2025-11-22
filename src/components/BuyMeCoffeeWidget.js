@@ -37,7 +37,7 @@ export default function BuyMeCoffeeWidget() {
                 <img
                     src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png"
                     alt="Buy Me A Coffee"
-                    className="h-12 w-auto md:h-[60px]"
+                    className="h-12 w-auto md:h-[60px] rounded-xl"
                 />
             </a>
         </div>

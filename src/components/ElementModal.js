@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useAuth, useNotes } from "@/src/app/lib/store";
@@ -123,10 +124,12 @@ export default function ElementModal({ open, onClose, element }) {
               <div className="relative h-14 w-14 overflow-hidden rounded-lg ring-1 ring-white/10">
                 <div className={`absolute inset-0 bg-gradient-to-br ${gradientClass} opacity-30`}/>
                 {derived.image ? (
-                    <img
+                    <Image
                         src={derived.image}
                         alt={`${element.name}`}
-                        className="absolute inset-0 h-full w-full object-cover"
+                        fill
+                        sizes="(max-width: 640px) 56px, 56px"
+                        className="object-cover"
                     />
                 ) : (
                     <div className="absolute inset-0 grid place-items-center text-xl font-bold text-white">
@@ -220,7 +223,7 @@ export default function ElementModal({ open, onClose, element }) {
                     </div>
                   ) : (
                     <div className="flex items-center gap-1 text-xs text-white/60">
-                      <input placeholder="Your name" className="w-32 rounded bg-white/5 px-2 py-1 outline-none placeholder:text-white/40" onKeyDown={(e)=>{ if(e.key==='Enter'){ login(e.currentTarget.value.trim()||'Guest') } }} />
+                      <input id="login-name" name="login-name" placeholder="Your name" className="w-32 rounded bg-white/5 px-2 py-1 outline-none placeholder:text-white/40" onKeyDown={(e)=>{ if(e.key==='Enter'){ login(e.currentTarget.value.trim()||'Guest') } }} />
                       <button onClick={()=>{ const el = document.activeElement; const name = el && el.value ? el.value : 'Guest'; login(name); }} className="rounded bg-white/10 px-2 py-1 hover:bg-white/20">Log in</button>
                     </div>
                   )}
@@ -228,6 +231,8 @@ export default function ElementModal({ open, onClose, element }) {
 
                 <div className="rounded-xl border border-white/10 bg-white/5 p-3">
                   <textarea
+                    id="contribution-text"
+                    name="contribution-text"
                     value={text}
                     onChange={(e) => setText(e.target.value)}
                     placeholder="Add an extra detail, source, or usage..."

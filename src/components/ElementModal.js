@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useAuth, useNotes } from "@/src/app/lib/store";
 import { ATOMIC_MASS_BY_SYMBOL } from "@/src/app/lib/categories";
 import { GROUP_GRADIENTS } from "@/src/components/ElementCard";
+import { useViewMode } from "@/src/components/ViewModeContext";
 
 // Heuristics for extra details when not present in data
 const RADIOACTIVE_SYMBOLS = new Set([
@@ -68,7 +69,7 @@ function getDerivedInfo(el) {
 function RadiationIcon({ className = "h-4 w-4" }) {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden>
-      <path d="M12 13a1 1 0 1 0 0-2 1 1 0 0 0 0 2Zm0-10a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm-1 9H5.53a6.99 6.99 0 0 1 2.19-4.4L10.02 11Zm7.47 0H13.02l2.3-4.4a6.99 6.99 0 0 1 2.19 4.4ZM8.45 14.4 6.1 18.8A7 7 0 0 1 5.53 13H11a3 3 0 0 0-2.55 1.4Zm7.1 0A3 3 0 0 0 13 13h5.47a7 7 0 0 1-.57 5.8l-2.35-4.4Zm-2.98 2.94L12 17.3l-.57.04-4.05.28A7 7 0 0 1 12 20a7 7 0 0 1 4.62-1.38l-4.05-.28Z" />
+      <path d="M12 13a1 1 0 1 0 0-2 1 1 0 0 0 0 2Zm0-10a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm-1 9H5.53a6.99 6.99 0 0 1 2.19-4.4L10.02 11Zm7.47 0H13.02l2.3-4.4a6.99 6 0 0 1 2.19 4.4ZM8.45 14.4 6.1 18.8A7 7 0 0 1 5.53 13H11a3 3 0 0 0-2.55 1.4Zm7.1 0A3 3 0 0 0 13 13h5.47a7 7 0 0 1-.57 5.8l-2.35-4.4Zm-2.98 2.94L12 17.3l-.57.04-4.05.28A7 7 0 0 1 12 20a7 7 0 0 1 4.62-1.38l-4.05-.28Z" />
     </svg>
   );
 }
@@ -84,8 +85,11 @@ function WarningIcon({ className = "h-4 w-4" }) {
 export default function ElementModal({ open, onClose, element }) {
   const { user, login, logout } = useAuth();
   const { notes, addNote } = useNotes();
+  const { viewMode } = useViewMode();
   const [text, setText] = useState("");
   const list = element ? notes[element.symbol] || [] : [];
+  
+  const isDesktop = viewMode === 'desktop';
 
   const derived = useMemo(() => (element ? getDerivedInfo(element) : null), [element]);
 
@@ -116,9 +120,12 @@ export default function ElementModal({ open, onClose, element }) {
           animate={{ y: 0, opacity: 1, scale: 1 }}
           exit={{ y: 10, opacity: 0, scale: 0.98 }}
           transition={{ type: "spring", stiffness: 260, damping: 22 }}
-          className="mx-2 flex w-full max-w-4xl flex-col overflow-hidden rounded-2xl border border-white/10 bg-neutral-950 shadow-2xl max-h-[90vh] sm:mx-4"
+          // Force layout classes if isDesktop is true, otherwise fallback to sm: responsive classes which might not trigger on narrow viewports
+          className={`mx-2 flex w-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-neutral-950 shadow-2xl max-h-[90vh] 
+            ${isDesktop ? 'max-w-4xl mx-4' : 'sm:mx-4 sm:max-w-4xl'}
+          `}
         >
-          <div className="flex flex-col gap-3 border-b border-white/10 p-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className={`flex flex-col gap-3 border-b border-white/10 p-4 ${isDesktop ? 'flex-row items-center justify-between' : 'sm:flex-row sm:items-center sm:justify-between'}`}>
             <div className="flex flex-1 items-center gap-3">
 
               <div className="relative h-14 w-14 overflow-hidden rounded-lg ring-1 ring-white/10">
@@ -145,7 +152,7 @@ export default function ElementModal({ open, onClose, element }) {
             </div>
             <button
                 onClick={onClose}
-                className="self-end rounded-md px-3 py-1.5 text-sm text-white/70 hover:bg-white/5 sm:self-auto"
+                className={`self-end rounded-md px-3 py-1.5 text-sm text-white/70 hover:bg-white/5 ${isDesktop ? 'self-auto' : 'sm:self-auto'}`}
             >
               Close
             </button>
@@ -153,7 +160,7 @@ export default function ElementModal({ open, onClose, element }) {
 
           <div className="flex-1 overflow-y-auto">
             {(derived?.radioactive || derived?.toxic) && (
-              <div className="mx-4 mt-4 rounded-xl border border-yellow-500/20 bg-yellow-500/10 p-3 text-yellow-300 sm:mx-6">
+              <div className={`mx-4 mt-4 rounded-xl border border-yellow-500/20 bg-yellow-500/10 p-3 text-yellow-300 ${isDesktop ? 'mx-6' : 'sm:mx-6'}`}>
                 <div className="flex items-center gap-2 text-sm font-medium">
                   {derived.radioactive && (
                     <span className="inline-flex items-center gap-1"><RadiationIcon className="h-4 w-4"/> Radioactive</span>
@@ -169,9 +176,9 @@ export default function ElementModal({ open, onClose, element }) {
               </div>
             )}
 
-            <div className="grid grid-cols-1 gap-5 p-4 pb-6 sm:p-6 lg:grid-cols-5">
-              <div className="space-y-5 lg:col-span-3">
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div className={`grid grid-cols-1 gap-5 p-4 pb-6 ${isDesktop ? 'grid-cols-5 p-6' : 'sm:p-6 lg:grid-cols-5'}`}>
+              <div className={`space-y-5 ${isDesktop ? 'col-span-3' : 'lg:col-span-3'}`}>
+                <div className={`grid grid-cols-1 gap-4 ${isDesktop ? 'grid-cols-2' : 'sm:grid-cols-2'}`}>
                   <div className={`rounded-xl bg-gradient-to-br ${gradientClass} p-[1.5px]`}>
                     <div className="rounded-[0.9rem] bg-neutral-950">
                       <div className="relative h-48 w-full overflow-hidden rounded-[0.9rem]">
@@ -213,8 +220,8 @@ export default function ElementModal({ open, onClose, element }) {
                 </div>
               </div>
 
-              <div className="space-y-3 lg:col-span-2">
-                <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+              <div className={`space-y-3 ${isDesktop ? 'col-span-2' : 'lg:col-span-2'}`}>
+                <div className={`flex flex-col gap-2 ${isDesktop ? 'flex-row items-center justify-between' : 'sm:flex-row sm:items-center sm:justify-between'}`}>
                   <div className="text-sm font-semibold text-white/80">User contributions</div>
                   {user ? (
                     <div className="flex items-center gap-2 text-xs text-white/60">
@@ -236,7 +243,7 @@ export default function ElementModal({ open, onClose, element }) {
                     value={text}
                     onChange={(e) => setText(e.target.value)}
                     placeholder="Add an extra detail, source, or usage..."
-                    className="h-28 w-full resize-none rounded-md bg-transparent p-2 text-sm text-white/80 outline-none placeholder:text-white/40 sm:h-24"
+                    className={`h-28 w-full resize-none rounded-md bg-transparent p-2 text-sm text-white/80 outline-none placeholder:text-white/40 ${isDesktop ? 'h-24' : 'sm:h-24'}`}
                   />
                   <div className="mt-2 flex justify-end">
                     <button disabled={!user || !text.trim()} onClick={handleAdd} className="rounded-lg bg-white/10 px-3 py-1.5 text-sm text-white/80 ring-1 ring-white/10 transition enabled:hover:bg-white/20 disabled:opacity-40">Save</button>

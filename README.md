@@ -29,25 +29,19 @@ Users can visually identify element groups and interact with elements to view th
 
 ## 🖼️ Screenshots
 
-> Add screenshots of your application UI here to give users a visual overview.
-
 ### 🔹 Desktop View
 
-```md
-![Desktop View](screenshots/desktop-view.png)
-```
+![Desktop View](public/desktop1.png)
 
 ### 🔹 Element Details / Interaction
 
-```md
-![Element Details](screenshots/element-details.png)
-```
+![Element Details](public/desktop2.png)
+
 
 ### 🔹 Mobile View
 
-```md
-![Mobile View](screenshots/mobile-view.png)
-```
+![Mobile View](public/mobile1.jpg)
+
 
 📁 **Tip:** Create a `screenshots/` folder in your repository and place the images there.
 

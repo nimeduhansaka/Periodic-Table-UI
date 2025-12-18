@@ -43,8 +43,6 @@ Users can visually identify element groups and interact with elements to view th
 ![Mobile View](public/mobile1.jpg)
 
 
-📁 **Tip:** Create a `screenshots/` folder in your repository and place the images there.
-
 ---
 
 ## 🛠️ Technologies Used
